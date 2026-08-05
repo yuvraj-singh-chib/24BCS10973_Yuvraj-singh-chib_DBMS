@@ -1,0 +1,10 @@
+do $$
+declare val int :=15;
+begin
+if val>=1 and val <=10 then raise notice 'your value is % and tange is between 1 to 10',val;
+elsif val>10 and val<=20 then raise notice 'your value is % and tange is between 11 to 20',val;
+else raise notice 'your value is % and tange is more then 20 to infinity',val;
+end if;
+
+end;
+$$

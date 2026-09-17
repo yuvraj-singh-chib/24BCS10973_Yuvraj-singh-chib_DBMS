@@ -1,0 +1,32 @@
+DROP TABLE IF EXISTS Employee;
+
+CREATE TABLE Employee (
+    EMP_ID INTEGER PRIMARY KEY,
+    EMP_NAME VARCHAR(100),
+    SALARY NUMERIC(10,2)
+);
+
+CREATE OR REPLACE PROCEDURE Insert_Employee(
+    IN p_EMP_ID INTEGER,
+    IN p_EMP_NAME VARCHAR(100),
+    IN p_SALARY NUMERIC(10,2)
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF p_EMP_ID % 2 = 0 THEN
+        RAISE EXCEPTION 'EMP_ID % is even. Only odd EMP_ID is allowed.',
+        p_EMP_ID;
+    END IF;
+
+    INSERT INTO Employee (EMP_ID, EMP_NAME, SALARY)
+    VALUES (p_EMP_ID, p_EMP_NAME, p_SALARY);
+
+    RAISE NOTICE 'Employee inserted successfully. EMP_ID: %',
+    p_EMP_ID;
+END;
+$$;
+
+CALL Insert_Employee(101, 'Amit', 50000);
+
+SELECT * FROM Employee;

@@ -1,0 +1,47 @@
+-- Experiment 7
+
+CREATE TABLE STAFF (
+    EMP_ID NUMBER PRIMARY KEY,
+    EMP_NAME VARCHAR2(100),
+    EMP_SALARY NUMBER(10,2),
+    DEPT_ID NUMBER
+);
+
+INSERT INTO STAFF VALUES (101, 'Rahul', 50000, 10);
+INSERT INTO STAFF VALUES (102, 'Amit', 60000, 10);
+INSERT INTO STAFF VALUES (103, 'Priya', 45000, 20);
+INSERT INTO STAFF VALUES (104, 'Sneha', 70000, 30);
+INSERT INTO STAFF VALUES (105, 'Karan', 80000, 20);
+INSERT INTO STAFF VALUES (106, 'Neha', 55000, 30);
+INSERT INTO STAFF VALUES (107, 'Rohit', 90000, 10);
+
+COMMIT;
+
+-- Enable Output
+SET SERVEROUTPUT ON;
+DECLARE
+    CURSOR c_top5 IS
+        SELECT EMP_NAME, EMP_SALARY
+        FROM STAFF
+        ORDER BY EMP_SALARY DESC
+        FETCH FIRST 5 ROWS ONLY;
+
+    v_name STAFF.EMP_NAME%TYPE;
+    v_salary STAFF.EMP_SALARY%TYPE;
+
+BEGIN
+    OPEN c_top5;
+
+    LOOP
+        FETCH c_top5 INTO v_name, v_salary;
+
+        EXIT WHEN c_top5%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('Employee Name : ' || v_name);
+        DBMS_OUTPUT.PUT_LINE('Salary        : ' || v_salary);
+        DBMS_OUTPUT.PUT_LINE('--------------------------');
+    END LOOP;
+
+    CLOSE c_top5;
+END;
+/
